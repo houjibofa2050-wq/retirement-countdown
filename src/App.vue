@@ -412,19 +412,19 @@ const todayProgTxt = computed(() => {
         <div v-if="birthPickerStep === 'year'" class="picker-body">
           <p>先选出生年份</p>
           <div class="choice-grid years">
-            <button v-for="year in birthYears" :key="year" type="button" @click="chooseBirthYear(year)">{{ year }} 年</button>
+            <button v-for="year in birthYears" :key="year" type="button" @click="chooseBirthYear(year)">{{ year }}</button>
           </div>
         </div>
         <div v-else-if="birthPickerStep === 'month'" class="picker-body">
           <p>已选 {{ pickedBirthYear }} 年，接着选月份</p>
           <div class="choice-grid months">
-            <button v-for="month in birthMonths" :key="month" type="button" @click="chooseBirthMonth(month)">{{ month }} 月</button>
+            <button v-for="month in birthMonths" :key="month" type="button" @click="chooseBirthMonth(month)">{{ month }}</button>
           </div>
         </div>
         <div v-else class="picker-body">
           <p>已选 {{ pickedBirthYear }} 年 {{ pickedBirthMonth }} 月，最后选日期</p>
           <div class="choice-grid days">
-            <button v-for="day in birthDays" :key="day" type="button" @click="chooseBirthDay(day)">{{ day }} 日</button>
+            <button v-for="day in birthDays" :key="day" type="button" @click="chooseBirthDay(day)">{{ day }}</button>
           </div>
           <small class="muted">日期会按所选年月自动调整。</small>
         </div>
