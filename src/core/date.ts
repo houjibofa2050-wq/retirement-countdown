@@ -1,5 +1,8 @@
 import { dayStart } from './retirement'
 
+// Native mobile date pickers need an explicit lower bound to show older years.
+export const MIN_BIRTH_ISO = '1900-01-01'
+
 /** 解析 YYYY-MM-DD 为 Day 零点 Date；非法回退到今天。 */
 export function parseISO(iso: string): Date {
   const d = dayStart(new Date(iso + 'T00:00:00'))

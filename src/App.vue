@@ -11,7 +11,7 @@ import {
 import { useApp } from './composables/useApp'
 import { reckon } from './core/reckon'
 import { dailyLine, randomAside, milestoneView } from './core/motivation'
-import { yearMonthCN } from './core/date'
+import { MIN_BIRTH_ISO, yearMonthCN } from './core/date'
 import { useTheme } from './composables/useTheme'
 import { downloadShareCard } from './core/shareCard'
 
@@ -194,7 +194,7 @@ const todayProgTxt = computed(() => {
       <form class="card form" @submit.prevent="onboarding = false">
         <label class="field">
           <span>你的出生日期</span>
-          <input v-model="birthISO" type="date" :max="todayISO" required data-testid="birth" />
+          <input v-model="birthISO" type="date" :min="MIN_BIRTH_ISO" :max="todayISO" required data-testid="birth" />
         </label>
         <div class="field">
           <span class="lbl">参保类型</span>
