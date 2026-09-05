@@ -1,0 +1,10 @@
+# deps / build
+node_modules/
+dist/
+dist-ssr/
+
+# local tooling
+.vite/
+*.local
+.DS_Store
+npm-debug.log*
