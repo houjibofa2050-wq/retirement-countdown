@@ -11,7 +11,7 @@ import {
 import { useApp } from './composables/useApp'
 import { reckon } from './core/reckon'
 import { dailyLine, randomAside, milestoneView } from './core/motivation'
-import { MIN_BIRTH_ISO, yearMonthCN } from './core/date'
+import { MIN_BIRTH_ISO, validDaysForMonth, yearMonthCN } from './core/date'
 import { useTheme } from './composables/useTheme'
 import { downloadShareCard } from './core/shareCard'
 
@@ -100,6 +100,56 @@ setInterval(() => {
 const phrase = computed(() => `${todayMain.value.replace(/。$/, '')} · ${aside.value}`)
 
 const todayISO = computed(() => new Date().toISOString().slice(0, 10))
+
+// 自建的出生日期选择器避免各手机系统的原生日期控件表现不一致。
+const birthPickerOpen = ref(false)
+const birthPickerStep = ref<'year' | 'month' | 'day'>('year')
+const pickedBirthYear = ref<number | null>(null)
+const pickedBirthMonth = ref<number | null>(null)
+const birthMonths = Array.from({ length: 12 }, (_, index) => index + 1)
+const birthYears = computed(() => {
+  const firstYear = Number(MIN_BIRTH_ISO.slice(0, 4))
+  const currentYear = new Date().getFullYear()
+  return Array.from({ length: currentYear - firstYear + 1 }, (_, index) => currentYear - index)
+})
+const birthDays = computed(() =>
+  pickedBirthYear.value && pickedBirthMonth.value
+    ? validDaysForMonth(pickedBirthYear.value, pickedBirthMonth.value)
+    : [],
+)
+const birthDateText = computed(() => {
+  if (!birthISO.value) return '选择出生日期'
+  const [year, month, day] = birthISO.value.split('-')
+  return `${year} 年 ${Number(month)} 月 ${Number(day)} 日`
+})
+
+function openBirthPicker() {
+  birthPickerStep.value = 'year'
+  birthPickerOpen.value = true
+}
+
+function chooseBirthYear(year: number) {
+  pickedBirthYear.value = year
+  birthPickerStep.value = 'month'
+}
+
+function chooseBirthMonth(month: number) {
+  pickedBirthMonth.value = month
+  birthPickerStep.value = 'day'
+}
+
+function chooseBirthDay(day: number) {
+  if (!pickedBirthYear.value || !pickedBirthMonth.value) return
+  birthISO.value = [pickedBirthYear.value, pickedBirthMonth.value, day]
+    .map((value) => String(value).padStart(2, '0'))
+    .join('-')
+  birthPickerOpen.value = false
+}
+
+function backBirthPicker() {
+  if (birthPickerStep.value === 'day') birthPickerStep.value = 'month'
+  else if (birthPickerStep.value === 'month') birthPickerStep.value = 'year'
+}
 
 // —— 下载分享卡 ——
 const shareBusy = ref(false)
@@ -192,10 +242,12 @@ const todayProgTxt = computed(() => {
 
       <!-- 表 -->
       <form class="card form" @submit.prevent="onboarding = false">
-        <label class="field">
+        <div class="field">
           <span>你的出生日期</span>
-          <input v-model="birthISO" type="date" :min="MIN_BIRTH_ISO" :max="todayISO" required data-testid="birth" />
-        </label>
+          <button class="date-trigger" type="button" data-testid="birth" @click="openBirthPicker">
+            <span :class="{ muted: !birthISO }">{{ birthDateText }}</span><b>选择</b>
+          </button>
+        </div>
         <div class="field">
           <span class="lbl">参保类型</span>
           <div class="seg">
@@ -341,6 +393,42 @@ const todayProgTxt = computed(() => {
         </p>
         <div class="sbtn"><button class="pill-c" @click="showAbout = false">知道了</button></div>
       </div>
+    </div>
+
+    <div v-if="birthPickerOpen" class="date-picker-mask" @click.self="birthPickerOpen = false">
+      <section class="date-picker" role="dialog" aria-modal="true" aria-label="选择出生日期">
+        <header>
+          <button class="picker-back" type="button" :disabled="birthPickerStep === 'year'" @click="backBirthPicker">‹ 返回</button>
+          <b>选择出生日期</b>
+          <button class="picker-close" type="button" @click="birthPickerOpen = false" aria-label="关闭">×</button>
+        </header>
+        <p class="picker-progress">
+          <span :class="{ on: birthPickerStep === 'year' }">1 年</span>
+          <i />
+          <span :class="{ on: birthPickerStep === 'month' }">2 月</span>
+          <i />
+          <span :class="{ on: birthPickerStep === 'day' }">3 日</span>
+        </p>
+        <div v-if="birthPickerStep === 'year'" class="picker-body">
+          <p>先选出生年份</p>
+          <div class="choice-grid years">
+            <button v-for="year in birthYears" :key="year" type="button" @click="chooseBirthYear(year)">{{ year }} 年</button>
+          </div>
+        </div>
+        <div v-else-if="birthPickerStep === 'month'" class="picker-body">
+          <p>已选 {{ pickedBirthYear }} 年，接着选月份</p>
+          <div class="choice-grid months">
+            <button v-for="month in birthMonths" :key="month" type="button" @click="chooseBirthMonth(month)">{{ month }} 月</button>
+          </div>
+        </div>
+        <div v-else class="picker-body">
+          <p>已选 {{ pickedBirthYear }} 年 {{ pickedBirthMonth }} 月，最后选日期</p>
+          <div class="choice-grid days">
+            <button v-for="day in birthDays" :key="day" type="button" @click="chooseBirthDay(day)">{{ day }} 日</button>
+          </div>
+          <small class="muted">日期会按所选年月自动调整。</small>
+        </div>
+      </section>
     </div>
   </main>
 </template>
