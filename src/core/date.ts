@@ -9,6 +9,14 @@ export function validDaysForMonth(year: number, month: number): number[] {
   return Array.from({ length: days }, (_, index) => index + 1)
 }
 
+/** 两个日期之间相隔的完整日历年与月，用于人类可读的长期倒计时。 */
+export function yearsMonthsUntil(from: Date, to: Date): { years: number; months: number } {
+  let totalMonths = (to.getFullYear() - from.getFullYear()) * 12 + to.getMonth() - from.getMonth()
+  if (to.getDate() < from.getDate()) totalMonths--
+  totalMonths = Math.max(0, totalMonths)
+  return { years: Math.floor(totalMonths / 12), months: totalMonths % 12 }
+}
+
 /** 解析 YYYY-MM-DD 为 Day 零点 Date；非法回退到今天。 */
 export function parseISO(iso: string): Date {
   const d = dayStart(new Date(iso + 'T00:00:00'))

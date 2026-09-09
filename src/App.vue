@@ -10,8 +10,8 @@ import {
 } from './core/retirement'
 import { useApp } from './composables/useApp'
 import { reckon } from './core/reckon'
-import { dailyLine, randomAside, milestoneView } from './core/motivation'
-import { MIN_BIRTH_ISO, validDaysForMonth, yearMonthCN } from './core/date'
+import { dailyLine, randomAside } from './core/motivation'
+import { MIN_BIRTH_ISO, validDaysForMonth, yearMonthCN, yearsMonthsUntil } from './core/date'
 import { useTheme } from './composables/useTheme'
 import { downloadShareCard } from './core/shareCard'
 
@@ -89,7 +89,10 @@ const policyShort = computed(() =>
   isResident.value ? `城乡居民 · 满 ${RESIDENT_START_AGE} 岁领取` : genderShortCN.value,
 )
 
-const mile = computed(() => (birthEntered.value ? milestoneView(real.value.naturalDays) : null))
+const timeReminder = computed(() => {
+  if (!birthEntered.value || !real.value.goal || real.value.over) return null
+  return yearsMonthsUntil(now.value, real.value.goal)
+})
 
 // —— 动态“今日一句话”：主句按日稳定，轻副句随机且隔段时间换一次（开页/3 分钟各来一次新意）——
 const todayMain = computed(() => dailyLine(now.value.getDate()))
@@ -342,13 +345,15 @@ const todayProgTxt = computed(() => {
           <p class="word">{{ phrase }}</p>
         </div>
         <div class="card mini">
-          <div class="mini-h">里程碑 · 距下一步</div>
-          <template v-if="mile">
-            <p class="word" v-if="mile.reached">🎉 已经到达——翻篇啦</p>
-            <p class="word" v-else-if="mile.daysAway !== null">到「{{ mile.label }}」还差 <b>{{ mile.daysAway }}</b> 天</p>
-            <p v-else class="word muted">路还很长，先好好生活</p>
+          <div class="mini-h">里程碑 · 此刻</div>
+          <template v-if="birthEntered">
+            <p class="word" v-if="real.over">退休不是终点，是时间归还给自己。</p>
+            <template v-else>
+              <p class="word">你不是在等某一天，而是在准备另一种生活。</p>
+              <p v-if="timeReminder" class="muted">离退休，还有 {{ timeReminder.years }} 年 {{ timeReminder.months }} 个月。</p>
+            </template>
           </template>
-          <p v-else class="word muted">填好生日就能看到啦</p>
+          <p v-else class="word muted">填好生日，看看你的里程碑。</p>
         </div>
       </div>
 
