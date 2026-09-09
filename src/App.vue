@@ -296,6 +296,24 @@ const todayProgTxt = computed(() => {
             看我的工作日 →</button>
       </form>
       <button class="demo" type="button" @click="fillDemo">👀 先看个示例效果</button>
+
+      <section class="search-guide" aria-labelledby="calculator-guide-title">
+        <h2 id="calculator-guide-title">退休年龄计算器：先看清时间，再安排生活</h2>
+        <p>填写出生日期、参保类型和适用口径，参考计算退休目标日、剩余工作日与自然日。结果仅供参考，实际办理请以主管部门最终规定为准。</p>
+        <h3>常见问题</h3>
+        <details>
+          <summary>这个退休年龄计算器能算什么？</summary>
+          <p>工具根据出生日期、参保类型和适用口径，参考计算退休目标日、剩余工作日和自然日。</p>
+        </details>
+        <details>
+          <summary>计算结果可以作为退休办理依据吗？</summary>
+          <p>不可以。退休政策与个人情况可能变化，实际办理请以主管部门最终规定为准。</p>
+        </details>
+        <details>
+          <summary>填写的出生日期会上传吗？</summary>
+          <p>不会。工具无需注册，填写的信息仅保存在当前浏览器本地。</p>
+        </details>
+      </section>
     </section>
 
     <!-- ============ MAIN（查倒计时） ============ -->
@@ -367,6 +385,11 @@ const todayProgTxt = computed(() => {
           @click="makeShare"
         >{{ shareBusy ? '生成中…' : '🖼️ 下载分享卡' }}</button>
       </div>
+
+      <section class="search-guide compact" aria-labelledby="calculator-guide-home-title">
+        <h2 id="calculator-guide-home-title">退休年龄计算器说明</h2>
+        <p>退休目标日、工作日和自然日均为参考估算；政策与个人情况变化时，请以主管部门最终规定为准。</p>
+      </section>
     </section>
 
     <footer class="foot muted">

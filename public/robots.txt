@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://houjibofa2050-wq.github.io/retirement-countdown/sitemap.xml

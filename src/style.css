@@ -103,6 +103,14 @@ nav { display: flex; gap: 6px; }
 .preview.free { border-color: var(--free-border); }
 
 .form { padding: 18px; }
+.search-guide { margin: 24px 0 8px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+.search-guide h2 { margin: 0 0 8px; font-size: 17px; line-height: 1.45; }
+.search-guide h3 { margin: 18px 0 8px; font-size: 15px; }
+.search-guide p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+.search-guide details { border-top: 1px solid var(--line); }
+.search-guide summary { padding: 12px 0; cursor: pointer; color: var(--ink); font-size: 14px; font-weight: 600; }
+.search-guide details p { padding: 0 0 12px; }
+.search-guide.compact { margin-top: 20px; }
 .field { display: block; margin-bottom: 14px; }
 .field span:not(.muted):not(.lbl) { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; }
 .field span small { font-weight: 400; }
