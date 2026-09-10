@@ -313,6 +313,17 @@ const todayProgTxt = computed(() => {
           <summary>填写的出生日期会上传吗？</summary>
           <p>不会。工具无需注册，填写的信息仅保存在当前浏览器本地。</p>
         </details>
+        <details>
+          <summary>退休年龄的参考口径来自哪里？</summary>
+          <p>
+            城镇职工部分参考全国人大常委会关于实施渐进式延迟法定退休年龄的决定及其批准的办法；个人档案、缴费年限和特殊情形可能影响实际办理，请以主管部门规定为准。
+            <a class="source-link" href="https://www.gov.cn/yaowen/liebiao/202409/content_6974294.htm" target="_blank" rel="noopener noreferrer">查看中国政府网原文</a>
+          </p>
+        </details>
+        <h3>政策口径与更新时间</h3>
+        <p>
+          本页于 2026 年 9 月 10 日核对。工具用于退休时间的参考计算，不替代社保经办机构的审核或退休办理结论。
+        </p>
       </section>
     </section>
 
@@ -389,6 +400,7 @@ const todayProgTxt = computed(() => {
       <section class="search-guide compact" aria-labelledby="calculator-guide-home-title">
         <h2 id="calculator-guide-home-title">退休年龄计算器说明</h2>
         <p>退休目标日、工作日和自然日均为参考估算；政策与个人情况变化时，请以主管部门最终规定为准。</p>
+        <p class="source-note">政策口径最后核对：2026 年 9 月 10 日 · <a class="source-link" href="https://www.gov.cn/yaowen/liebiao/202409/content_6974294.htm" target="_blank" rel="noopener noreferrer">中国政府网原文</a></p>
       </section>
     </section>
 
